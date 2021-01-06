@@ -1,7 +1,8 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 import './App.css';
 import {AddItemFormPropsType} from "./TODOLIST";
-
+import {Button, IconButton, TextField} from "@material-ui/core";
+import {TextFields} from "@material-ui/icons";
 
 
 export function AddItemForm(props: AddItemFormPropsType) {
@@ -28,14 +29,17 @@ export function AddItemForm(props: AddItemFormPropsType) {
 
     return (
         <div>
-            <input
+
+            <TextField
                 value={title}
+                variant={"outlined"}
+                label={"Type value"}
                 onChange={onChangeTaskHandler}
                 onKeyPress={onKeyPressHandler}
-                className={error ? 'error' : ''}/>
+                error={!!error }
+            helperText={error}/>
 
-            <button onClick={addTask}>+</button>
-            {error && <div className='error-message'>{error}</div>}
+            <IconButton onClick={addTask}  color={"primary"}>+</IconButton>
         </div>
     )
 }
