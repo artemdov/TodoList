@@ -5,7 +5,7 @@ import {v1} from "uuid";
 import {AddItemForm} from "./addItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
-import classes from "*.module.css";
+
 
 export type TodolistType = {
     filter: FilterValuesType
@@ -13,7 +13,7 @@ export type TodolistType = {
     title: string
 }
 
-type TasksStateType = {
+export type TasksStateType = {
     [key: string]: Array<TaskType>
 }
 
