@@ -39,7 +39,7 @@ export const tasksReducer = (state: TasksStateType, action: ActionType) => {
         case 'REMOVE-TASK': {
             let copyState = {...state}
             const tasks = state[action.todolistId]
-            copyState[action.todolistId] = tasks.filter(t => t.id ! == action.taskId)
+            copyState[action.todolistId] = tasks.filter(t => t.id !== action.taskId)
 
             return copyState
         }
