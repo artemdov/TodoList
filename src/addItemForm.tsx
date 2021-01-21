@@ -1,11 +1,9 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 import './App.css';
 import {AddItemFormPropsType} from "./TODOLIST";
-import {Button, IconButton, TextField} from "@material-ui/core";
-import {TextFields} from "@material-ui/icons";
+import {IconButton, TextField} from "@material-ui/core";
 
-
-export function AddItemForm(props: AddItemFormPropsType) {
+export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
 
     let [title, setTitle] = useState('')
     const [error, setError] = useState<string | null>(null)
@@ -21,7 +19,7 @@ export function AddItemForm(props: AddItemFormPropsType) {
         setTitle(e.currentTarget.value)
     }
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError(null)
+       if(error !== null) setError(null)
         if (e.key === 'Enter') {
             addTask()
         }
@@ -42,4 +40,4 @@ export function AddItemForm(props: AddItemFormPropsType) {
             <IconButton onClick={addTask}  color={"primary"}>+</IconButton>
         </div>
     )
-}
+})
