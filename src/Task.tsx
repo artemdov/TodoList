@@ -15,7 +15,7 @@ type TaskPropsType = {
 export const Task = React.memo((props: TaskPropsType) => {
     const onClickHandler = () => props.removeTask(props.taskId, props.todolistId)
     const onChangeCheckboxHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        const newIsDoneValue = e.currentTarget.checked
+         const newIsDoneValue = e.currentTarget.checked
         props.changeStatus(props.taskId, newIsDoneValue, props.todolistId)
     }
     const onChangeTitleHandler = (newValue: string) => {
