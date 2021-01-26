@@ -20,6 +20,26 @@ export type TasksStateType = {
 export type FilterValuesType = 'all' | 'active' | 'completed'
 
 function App() {
+    const todolistId1 = v1()
+    const todolistId2 = v1()
+
+    const [todolists, setTodolists] = useState<Array<TodolistType>>([
+        {id: todolistId1, title: 'What to learn', filter: 'all'},
+        {id: todolistId2, title: 'What to buy', filter: 'all'}
+    ])
+    const [tasks, setTasks] = useState<TasksStateType>({
+        [todolistId1]:
+            [{id: v1(), title: "HTML&CSS", isDone: false},
+                {id: v1(), title: "JS", isDone: true},
+                {id: v1(), title: "ReactJS", isDone: true}
+            ],
+        [todolistId2]: [
+            {id: v1(), title: "Book", isDone: false},
+            {id: v1(), title: "Beer", isDone: true},
+            {id: v1(), title: "Milk", isDone: true}
+        ]
+    })
+
     function changeTitle(id: string, newTitle: string, todolistId: string) {
         const todolistTasks = tasks[todolistId]
         const task = todolistTasks.find(t => t.id === id)
@@ -80,27 +100,6 @@ function App() {
         setTodolists([todolist, ...todolists])
         setTasks({...tasks, [todolist.id]: []})
     }
-
-    const todolistId1 = v1()
-    const todolistId2 = v1()
-
-    const [todolists, setTodolists] = useState<Array<TodolistType>>([
-        {id: todolistId1, title: 'What to learn', filter: 'all'},
-        {id: todolistId2, title: 'What to buy', filter: 'all'}
-    ])
-    const [tasks, setTasks] = useState<TasksStateType>({
-        [todolistId1]:
-            [{id: v1(), title: "HTML&CSS", isDone: false},
-                {id: v1(), title: "JS", isDone: true},
-                {id: v1(), title: "ReactJS", isDone: true}
-            ],
-        [todolistId2]: [
-            {id: v1(), title: "Book", isDone: false},
-            {id: v1(), title: "Beer", isDone: true},
-            {id: v1(), title: "Milk", isDone: true}
-        ]
-    })
-
 
 
     return (

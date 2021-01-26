@@ -3,9 +3,7 @@ export type StateType = {
     age: number
     childrenCount: number
 }
-// 3 типа действий: action type
-//описание(тип) действия и (возможно!!!) какието параметры(9 строка-параметры)
-// action-обьект у которго есть тип действий
+
 type ActionType = {
     type: string
     [key: string]: any

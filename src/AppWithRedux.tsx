@@ -94,7 +94,6 @@ function AppWithRedux() {
                                 <Paper style={{padding: "10px"}}>
 
                                     <Todolist
-
                                         changeTitle={changeTitle}
                                         changeTodolistTitle={changeTodolistTitle}
                                         removeTodolist={removeTodolist}
