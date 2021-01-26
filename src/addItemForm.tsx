@@ -4,7 +4,7 @@ import {AddItemFormPropsType} from "./TODOLIST";
 import {IconButton, TextField} from "@material-ui/core";
 
 export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
-
+    console.log('AddItF called')
     let [title, setTitle] = useState('')
     const [error, setError] = useState<string | null>(null)
     const addTask = () => {

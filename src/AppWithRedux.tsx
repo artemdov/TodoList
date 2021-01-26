@@ -82,12 +82,7 @@ function AppWithRedux() {
                             let allTodolistTasks =tasks[tl.id]
                             let taskForTodolist = allTodolistTasks
 
-                            if (tl.filter == 'active') {
-                                taskForTodolist = allTodolistTasks.filter(t => !t.isDone)
-                            }
-                            if (tl.filter == 'completed') {
-                                taskForTodolist = allTodolistTasks.filter(t => t.isDone)
-                            }
+
 
                             return <Grid  item key={tl.id}
                             >
