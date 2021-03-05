@@ -1,16 +1,15 @@
 import React, {useEffect, useState} from 'react'
-import axios from "axios";
 import {todolistAPI} from "../api/todolist-api";
 
 export default {
     title: 'API'
 }
 
-export const GetTodolists = () => {
-    const [state, setState] =  useState<any>(null)
+export const GetTodolist = () => {
+    const [state, setState] = useState<any>(null)
 
     useEffect(() => {
-        todolistAPI.getTodolists()
+        todolistAPI.getTodolist()
             .then((res) => {
                 setState(res.data)
             })
@@ -19,7 +18,6 @@ export const GetTodolists = () => {
 
     return <div> {JSON.stringify(state)}</div>
 }
-
 
 
 export const CreateTodolist = () => {
@@ -31,19 +29,19 @@ export const CreateTodolist = () => {
                 setState(res.data)
             })
 
-    },[])
+    }, [])
 
-        return <div> {JSON.stringify(state)}</div>
+    return <div> {JSON.stringify(state)}</div>
 }
 
 export const DeleteTodolist = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
-        const todolistId = '685f7e53-3b60-49fc-a811-453c33f2c588'
+        const todolistId = 'e936ef3f-12be-4fd8-a92b-a7c4ad3e7b76'
         todolistAPI.deleteTodolist(todolistId)
             .then((res) => {
                 setState(res.data)
-        })
+            })
 
     }, [])
 

@@ -23,7 +23,7 @@ export type TodoType = {
 }
 
 export const todolistAPI = {
-    getTodolists() {
+    getTodolist() {
         return instance.get<Array<TodoType>>('todo-lists')
 
     },
