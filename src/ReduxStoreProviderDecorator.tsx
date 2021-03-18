@@ -1,4 +1,3 @@
-
 import React from 'react'
 import {Provider} from 'react-redux'
 import {combineReducers, createStore} from 'redux'
@@ -11,11 +10,12 @@ const rootReducer = combineReducers({
     tasks: tasksReducer,
     todolists: todolistsReducer
 })
+/*
 
 const initialGlobalState = {
     todolists: [
-        {id: "todolistId1", title: "What to learn", filter: "all"},
-        {id: "todolistId2", title: "What to buy", filter: "all"}
+        {id: "todolistId1", title: "What to learn", filter: "all",  order: 0, addedDate: ''},
+        {id: "todolistId2", title: "What to buy", filter: "all",  order: 0, addedDate: ''}
     ] ,
     tasks: {
         ["todolistId1"]: [
@@ -37,4 +37,5 @@ export const ReduxStoreProviderDecorator = (storyFn: ()=>React.ReactNode) => (
     </Provider>)
 
 
+*/
 

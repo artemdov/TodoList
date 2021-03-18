@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {FilterValuesType} from "../App";
 
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
@@ -20,6 +21,9 @@ export type TodoType = {
     title: string
     addedDate: string
     order: number
+}
+export type TodolistDomainType =TodoType & {
+    filter: FilterValuesType
 }
 
 export const todolistAPI = {

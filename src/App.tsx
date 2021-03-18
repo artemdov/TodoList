@@ -1,10 +1,13 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
-import Todolist, {TaskType} from "./TODOLIST";
+import Todolist, {TasksType} from "./TODOLIST";
 import {v1} from "uuid";
 import {AddItemForm} from "./addItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
+import {todolistAPI} from "./api/todolist-api";
+import {setTodolistsAC} from "./state/todolists-reducer";
+import {useDispatch} from "react-redux";
 
 
 export type TodolistType = {
@@ -13,13 +16,21 @@ export type TodolistType = {
     title: string
 }
 
-export type TasksStateType = {
-    [key: string]: Array<TaskType>
-}
+
 
 export type FilterValuesType = 'all' | 'active' | 'completed'
 
 function App() {
+/*
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        todolistAPI.getTodolist()
+            .then((res) => {
+                dispatch(setTodolistsAC(res.data))
+            })
+    }, [])
+
     const todolistId1 = v1()
     const todolistId2 = v1()
 
@@ -155,7 +166,7 @@ function App() {
                 </Grid>
             </Container>
         </div>
-    );
+    );*/
 }
 
 export default App;

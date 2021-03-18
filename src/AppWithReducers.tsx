@@ -1,12 +1,13 @@
 import React, {useReducer} from 'react';
 import './App.css';
-import Todolist, {TaskType} from "./TODOLIST";
+import Todolist from "./TODOLIST";
 import {v1} from "uuid";
 import {AddItemForm} from "./addItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
-import {AddTodolistAC, ChangeTodolistFilterAC, ChangeTodolistTitleAC, RemoveTodolistAC, todolistsReducer } from "./state/todolists-reducer";
+import { ChangeTodolistFilterAC, ChangeTodolistTitleAC, RemoveTodolistAC, todolistsReducer } from "./state/todolists-reducer";
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./state/tasks-reducer";
+import {TaskType} from "./api/task-api";
 
 
 export type TodolistType = {
@@ -22,7 +23,7 @@ export type TasksStateType = {
 export type FilterValuesType = 'all' | 'active' | 'completed'
 
 function AppWithReducers() {
-   function changeTitle(id: string, newTitle: string, todolistId: string) {
+/*   function changeTitle(id: string, newTitle: string, todolistId: string) {
        const action = changeTaskTitleAC(id,newTitle,todolistId)
        dispatchToTasks(action)
 
@@ -64,8 +65,8 @@ function AppWithReducers() {
     const todolistId2 = v1()
 
     const [todolists, dispatchToTodolist] = useReducer(todolistsReducer,[
-        {id: todolistId1, title: 'What to learn', filter: 'all'},
-        {id: todolistId2, title: 'What to buy', filter: 'all'}
+        {id: todolistId1, title: 'What to learn', filter: 'all',  order: 0, addedDate: ''},
+        {id: todolistId2, title: 'What to buy', filter: 'all',  order: 0, addedDate: ''}
     ])
     const [tasks, dispatchToTasks] = useReducer(tasksReducer,{
         [todolistId1]:
@@ -135,7 +136,7 @@ function AppWithReducers() {
                 </Grid>
             </Container>
         </div>
-    );
+    );*/
 }
 
 export default AppWithReducers;
