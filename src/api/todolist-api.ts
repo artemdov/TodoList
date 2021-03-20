@@ -9,11 +9,24 @@ const instance = axios.create({
     }
 })
 
-type CommonResponseType<T={}> = {
+export type CommonResponseType<T={}> = {
     data: T
     fieldsErrors: Array<string>
     messages: Array<string>
     resultCode: number
+}
+export enum TaskStatuses  {
+    New,
+    InProgress,
+    Completed,
+    Draft
+}
+export enum PriorityStatuses {
+    Low,
+    Middle,
+    Hi,
+    Urgently,
+    Later
 }
 
 export type TodoType = {

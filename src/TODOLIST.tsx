@@ -9,6 +9,7 @@ import {Task} from "./Task";
 import {useDispatch} from "react-redux";
 import {fetchTasksTC} from "./state/tasks-reducer";
 import {TaskType} from "./api/task-api";
+import {TaskStatuses} from "./api/todolist-api";
 
 export type PropsType = {
     title: string
@@ -16,7 +17,7 @@ export type PropsType = {
     removeTask: (taskId: string, todolistId: string) => void
     changeFilter: (value: FilterValuesType, todolistId: string) => void
     addTask: (title: string, todolistId: string) => void
-    changeStatus: (id: string, isDone: boolean, todolistId: string) => void
+    changeStatus: (id: string, status: TaskStatuses, todolistId: string) => void
     changeTitle: (id: string, newValue: string, todolistId: string) => void
     changeTodolistTitle: (newTitle: string, id: string,) => void
     removeTodolist: (todolistId: string) => void
@@ -77,7 +78,7 @@ export const Todolist = React.memo((props: PropsType) => {
                         const onClickHandler = () => props.removeTask(t.id, props.id)
                         const onChangeCheckboxHandler = (e: ChangeEvent<HTMLInputElement>) => {
                             const newIsDoneValue = e.currentTarget.checked
-                            props.changeStatus(t.id, newIsDoneValue, props.id)
+                            props.changeStatus(t.id, t.status, props.id)
                         }
                         const onChangeTitleHandler = (newValue: string) => {
                             props.changeTitle(t.id, newValue, props.id)

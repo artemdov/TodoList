@@ -33,7 +33,7 @@ export type GetTasksResponse = {
     totalCount: number
     items: Array<TaskType>
 }
-type UpdateTaskModelType = {
+export type UpdateTaskModelType = {
     title: string
     description: string
     status: number
