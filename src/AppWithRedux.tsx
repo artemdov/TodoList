@@ -2,40 +2,46 @@ import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import Todolist from "./TODOLIST";
 import {AddItemForm} from "./addItemForm";
-import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
+import {
+    AppBar,
+    Button,
+    Container,
+    Grid,
+    IconButton, LinearProgress,
+    Paper,
+    Toolbar,
+    Typography
+} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 import {
     addTodolistTC,
     ChangeTodolistFilterAC, changeTodolistTC,
-    ChangeTodolistTitleAC, fetchTodolistsTC,
-    RemoveTodolistAC, removeTodolistTC
+    fetchTodolistsTC,
+    removeTodolistTC
 } from "./state/todolists-reducer";
 import {
-    addTaskAC,
+
     addTaskTC, updateTaskTC,
-    updateTaskStatusAC,
-    changeTaskTitleAC,
     deleteTaskTC
 } from "./state/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
 import {TaskType} from "./api/task-api";
 import {TaskStatuses} from "./api/todolist-api";
+import {ErrorSnackBar} from "./ErrorSnackBar/ErrorSnackBar";
+
 
 export type TodolistType = {
     filter: FilterValuesType
     id: string
     title: string
 }
-
 export type TasksStateType = {
     [key: string]: Array<TaskType>
 }
-
 export type FilterValuesType = 'all' | 'active' | 'completed'
 
 function AppWithRedux() {
-
     const changeTitle = useCallback((id: string, newTitle: string, todolistId: string) => {
         const action = updateTaskTC(todolistId, id, {title: newTitle})
         dispatch(action)
@@ -52,10 +58,10 @@ function AppWithRedux() {
     const changeTodolistTitle = useCallback((id: string, title: string) => {
         dispatch(changeTodolistTC(id, title))
     }, [])
-    const changeFilter = useCallback((value: FilterValuesType, todolistId: string) => {
+    const changeFilter = (value: FilterValuesType, todolistId: string) => {
         const action = ChangeTodolistFilterAC(value, todolistId)
         dispatch(action)
-    }, [])
+    }
     const removeTodolist = useCallback((todolistId: string) => {
         dispatch(removeTodolistTC(todolistId))
     }, [])
@@ -74,6 +80,7 @@ function AppWithRedux() {
     }, [])
     return (
         <div className='App'>
+            <ErrorSnackBar />
             <AppBar position="static">
                 <Toolbar>
                     <IconButton edge="start" color="inherit" aria-label="menu">
@@ -84,6 +91,7 @@ function AppWithRedux() {
                     </Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>
+                <LinearProgress/>
             </AppBar>
             <Container fixed>
                 <Grid container style={{padding: "10px"}}>
