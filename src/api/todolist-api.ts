@@ -1,5 +1,6 @@
 import axios from 'axios'
 import {FilterValuesType} from "../App";
+import {RequestStatusType} from "../state/app-reducer";
 
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
@@ -52,4 +53,5 @@ export type TodoType = {
 }
 export type TodolistDomainType =TodoType & {
     filter: FilterValuesType
+    entityStatus: RequestStatusType
 }

@@ -2,10 +2,10 @@ import {
     addTaskAC,
     changeTaskTitleAC,
     removeTaskAC, setTasksAC,
-    tasksReducer, updateTaskStatusAC
+    tasksReducer, updateTaskStatusAndTitleAC
 } from './tasks-reducer';
 
-import {addTodolistAC, RemoveTodolistAC, setTodolistsAC} from "./todolists-reducer";
+import {addTodolistAC, removeTodolistAC, setTodolistsAC} from "./todolists-reducer";
 import {TaskType} from "../api/task-api";
 import {PriorityStatuses, TaskStatuses} from "../api/todolist-api";
 
@@ -145,7 +145,7 @@ test('correct task should be added to correct array', () => {
 test('status of specified task should be changed', () => {
 
 
-    const action = updateTaskStatusAC("2", {...startState}, "todolistId2");
+    const action = updateTaskStatusAndTitleAC("2", {...startState}, "todolistId2");
     const endState = tasksReducer(startState, action)
 
     expect(endState['todolistId2'][1].status).toBe(2);
@@ -187,7 +187,7 @@ test('new array should be added when new todolist is added', () => {
 
 test('property with todolistId should be deleted', () => {
 
-    const action = RemoveTodolistAC("todolistId2");
+    const action = removeTodolistAC("todolistId2");
     const endState = tasksReducer(startState, action)
 
 
