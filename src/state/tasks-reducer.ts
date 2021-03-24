@@ -4,12 +4,14 @@ import {todolistAPI} from "../api/task-api";
 import {Dispatch} from "redux";
 import {AppRootStateType} from "./store";
 import {setErrorAC, setErrorActionType, setStatusAC, setStatusActionType} from "./app-reducer";
+import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
+import {PriorityStatuses, TaskStatuses} from "../api/todolist-api";
 
 export type UpdateDomainTaskModelType = {
     title?: string
     description?: string
-    status?: number
-    priority?: number
+    status?: TaskStatuses
+    priority?: PriorityStatuses
     startDate?: string
     deadline?: string
 }
@@ -74,6 +76,7 @@ export const removeTaskAC = (taskId: string, todolistId: string) => ({
     taskId: taskId,
     todolistId: todolistId
 } as const)
+
 export const addTaskAC = (task: TaskType) => ({type: 'ADD-TASK', task} as const)
 export const updateTaskStatusAndTitleAC = (taskId: string, model: UpdateDomainTaskModelType, todolistId: string) => ({
     type: 'UPDATE-TASK-STATUS-TITLE',
@@ -103,7 +106,8 @@ export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch<ActionTy
             dispatch(setStatusAC('succeeded'))
         })
 }
-export const deleteTaskTC = (id: string, todolistId: string) => (dispatch: Dispatch<ActionType | setStatusActionType>) => {
+export const deleteTaskTC = (id: string, todolistId: string) => (dispatch: Dispatch<ActionType
+    | setStatusActionType>) => {
     dispatch(setStatusAC('loading'))
     todolistAPI.deleteTask(todolistId, id)
         .then((res) => {
@@ -111,7 +115,8 @@ export const deleteTaskTC = (id: string, todolistId: string) => (dispatch: Dispa
             dispatch(setStatusAC('succeeded'))
         })
 }
-export const addTaskTC = (title: string, todolistId: string) => (dispatch: Dispatch<ActionType | setErrorActionType | setStatusActionType>) => {
+export const addTaskTC = (title: string, todolistId: string) => (dispatch: Dispatch<ActionType | setErrorActionType
+    | setStatusActionType>) => {
     dispatch(setStatusAC('loading'))
     todolistAPI.createTask(todolistId, title)
         .then((res) => {
@@ -127,16 +132,15 @@ export const addTaskTC = (title: string, todolistId: string) => (dispatch: Dispa
             dispatch(setStatusAC('failed'))
         })
         .catch((error) => {
-            dispatch(setErrorAC(error.message))
-            dispatch(setStatusAC('failed'))
+            handleServerNetworkError(error, dispatch)
 
         })
 }
-export const updateTaskTitleAndStatusTC = (todolistId: string, id: string, domainModel: UpdateDomainTaskModelType) =>
+export const updateTaskTitleAndStatusTC = (taskId: string, domainModel: UpdateDomainTaskModelType, todolistId: string) =>
     (dispatch: Dispatch<ActionType | setStatusActionType | setErrorActionType>, getState: () => AppRootStateType) => {
 
         const state = getState()
-        const task = state.tasks[todolistId].find(t => t.id === id)
+        const task = state.tasks[todolistId].find(t => t.id === taskId)
         if (!task) {
             console.warn('task is not found')
             return
@@ -150,20 +154,16 @@ export const updateTaskTitleAndStatusTC = (todolistId: string, id: string, domai
             deadline: task.deadline,
             ...domainModel
         }
-        todolistAPI.updateTask(todolistId, id, apiModel)
+        todolistAPI.updateTask(todolistId, taskId, apiModel)
             .then((res) => {
                 if (res.data.resultCode === 0) {
-                    dispatch(updateTaskStatusAndTitleAC(id, domainModel, todolistId))
-                } else if (res.data.messages.length) {
-                    dispatch(setErrorAC(res.data.messages[0]))
+                    dispatch(updateTaskStatusAndTitleAC(taskId, domainModel, todolistId))
                 } else {
-                    dispatch(setErrorAC('some error'))
+                    handleServerAppError(res.data, dispatch)
                 }
-                dispatch(setStatusAC('failed'))
             })
             .catch((error) => {
-                dispatch(setErrorAC(error.message))
-                dispatch(setStatusAC('failed'))
+                handleServerNetworkError(error, dispatch)
 
             })
     }

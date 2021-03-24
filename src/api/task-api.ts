@@ -8,7 +8,7 @@ const instance = axios.create({
     }
 })
 
-type ResponseType<T={}> = {
+export type ResponseType<T={}> = {
     data: T
     fieldsErrors: Array<string>
     messages: Array<string>
@@ -47,6 +47,7 @@ export const todolistAPI = {
         return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`)
     },
     updateTask(todolistId: string,  id: string, model: UpdateTaskModelType) {
+        debugger
        return instance.put<ResponseType>(`todo-lists/${todolistId}/tasks/${id}`, model)
     },
     deleteTask(todolistId: string, id: string)  {

@@ -52,9 +52,16 @@ function AppWithRedux({demo = false}: PropsDemoType) {
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
     const dispatch = useDispatch()
 
+    useEffect(() => {
+        if (demo) {
+        return
+    }
+        dispatch(fetchTodolistsTC())
+    }, [])
+
 
     const changeTaskTitle = useCallback((id: string, newTitle: string, todolistId: string) => {
-        const action = updateTaskTitleAndStatusTC(todolistId, id, {title: newTitle})
+        const action = updateTaskTitleAndStatusTC(id, {title: newTitle}, todolistId)
         dispatch(action)
     }, [])
     const removeTask = useCallback((id: string, todolistId: string) => {
@@ -64,7 +71,8 @@ function AppWithRedux({demo = false}: PropsDemoType) {
         dispatch(addTaskTC(title, todolistId))
     }, [])
     const changeStatus = useCallback((id: string, status: TaskStatuses, todolistId: string) => {
-        dispatch(updateTaskTitleAndStatusTC(todolistId, id, {status}))
+        debugger
+        dispatch(updateTaskTitleAndStatusTC(id, {status}, todolistId))
     }, [])
     const changeTodolistTitle = useCallback((id: string, title: string) => {
         dispatch(changeTodolistTC(id, title))
@@ -80,9 +88,6 @@ function AppWithRedux({demo = false}: PropsDemoType) {
         dispatch(addTodolistTC(title))
     }, [])
 
-    useEffect(() => {
-        dispatch(fetchTodolistsTC())
-    }, [])
 
     return (
         <div className='App'>
