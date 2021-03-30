@@ -1,7 +1,8 @@
 import {FilterValuesType, TodolistType} from "../App"
 import {todolistAPI, TodolistDomainType, TodoType} from "../api/todolist-api";
 import {Dispatch} from "redux";
-import {RequestStatusType, setStatusAC, setStatusActionType} from "./app-reducer";
+import {RequestStatusType, setErrorActionType, setStatusAC, setStatusActionType} from "./app-reducer";
+import {handleServerNetworkError} from "../utils/error-utils";
 
 export type AddTodolistActionType = ReturnType<typeof addTodolistAC>
 export type RemoveTodolistActionType = ReturnType<typeof removeTodolistAC>
@@ -57,13 +58,15 @@ export const changeTodolistEntityStatusAC = (id: string, status: RequestStatusTy
 export const setTodolistsAC = (todos: Array<TodoType>) => ({type: 'SET-TODOS', todos} as const)
 
 //thunks
-export const fetchTodolistsTC = () => (dispatch: Dispatch<ActionType | setStatusActionType>) => {
+export const fetchTodolistsTC = () => (dispatch: Dispatch<ActionType | setStatusActionType | setErrorActionType>) => {
     dispatch(setStatusAC('loading'))
-    //dispatch(changeTodolistEntityStatusAC( 'loading'))
     todolistAPI.getTodolist()
         .then(res => {
             dispatch(setTodolistsAC(res.data))
             dispatch(setStatusAC('succeeded'))
+        })
+        .catch(error => {
+            handleServerNetworkError(error, dispatch)
         })
 }
 export const removeTodolistTC = (todolistId: string) => (dispatch: Dispatch<ActionType | setStatusActionType>) => {
