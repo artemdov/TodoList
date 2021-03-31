@@ -1,11 +1,20 @@
 import React, {useEffect} from 'react'
 import './App.css'
-import {AppBar, Button, Container, IconButton, LinearProgress, Toolbar, Typography} from '@material-ui/core'
+import {
+    AppBar,
+    Button,
+    CircularProgress,
+    Container,
+    IconButton,
+    LinearProgress,
+    Toolbar,
+    Typography
+} from '@material-ui/core'
 import {Menu} from '@material-ui/icons'
 import {useDispatch, useSelector} from 'react-redux'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import {AppRootStateType} from "./state/store";
-import {RequestStatusType} from "./state/app-reducer";
+import {initializeAppTC, RequestStatusType} from "./state/app-reducer";
 import {TodolistsList} from "./Todolist/TodolistList";
 import {Login} from "./login/Login";
 
@@ -15,6 +24,20 @@ type PropsType = {
 
 function App({demo = false}: PropsType) {
     const status = useSelector<AppRootStateType, RequestStatusType>((state) => state.app.status)
+    const initialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)
+    const dispatch = useDispatch()
+
+
+    useEffect( () => {
+        dispatch(initializeAppTC())
+    }, [initialized])
+
+    if(!initialized) {
+       return <div style={{position: 'fixed', top: '30%',
+                            width: '100%', textAlign: 'center'}}>
+         <CircularProgress  />
+        </div>
+    }
 
     return (
         <div className="App">
