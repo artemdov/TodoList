@@ -9,14 +9,18 @@ import {
     fetchTodolistsTC,
     removeTodolistTC
 } from "../state/todolists-reducer";
-import {addTaskTC, TasksStateType, updateTaskStatusAndTitleAC} from "../state/tasks-reducer";
+import {
+    addTaskTC,
+    deleteTaskTC,
+    TasksStateType,
+    updateTaskStatusAndTitleAC,
+    updateTaskTitleAndStatusTC
+} from "../state/tasks-reducer";
 import {FilterValuesType} from "../App";
 import {AddItemForm} from "../addItemForm";
 import {Todolist} from "./TODOLIST";
 import {AppRootStateType} from "../state/store";
 import { Redirect } from 'react-router-dom';
-
-
 
 
 type PropsType = {
@@ -40,7 +44,7 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
     }, [])
 
     const removeTask = useCallback(function (id: string, todolistId: string) {
-        const thunk = removeTask(id, todolistId)
+        const thunk = deleteTaskTC(id, todolistId)
         dispatch(thunk)
     }, [])
 
@@ -50,12 +54,12 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
     }, [])
 
     const changeStatus = useCallback(function (id: string, status: TaskStatuses, todolistId: string) {
-        const thunk = updateTaskStatusAndTitleAC(id, {status}, todolistId)
+        const thunk = updateTaskTitleAndStatusTC(id, {status}, todolistId)
         dispatch(thunk)
     }, [])
 
     const changeTaskTitle = useCallback(function (id: string, newTitle: string, todolistId: string) {
-        const thunk = updateTaskStatusAndTitleAC(id, {title: newTitle}, todolistId)
+        const thunk = updateTaskTitleAndStatusTC(id, {title: newTitle}, todolistId)
         dispatch(thunk)
     }, [])
 

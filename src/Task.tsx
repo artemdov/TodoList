@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, useCallback, useState} from 'react';
+import React, {ChangeEvent, useCallback} from 'react';
 import {Checkbox, IconButton} from "@material-ui/core";
 import {EditableSpan} from "./EditableSpan";
 import {Delete} from "@material-ui/icons";
@@ -14,25 +14,25 @@ export type TaskPropsType = {
     changeTitle:(taskId: string, newTitle: string,todolistId: string) => void
 }
 export const Task = React.memo((props: TaskPropsType) => {
-    const onClickHandler = () => props.removeTask(props.task.id, props.todolistId)
-    const onChangeCheckboxHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const onClickHandler = useCallback(() => props.removeTask(props.task.id, props.todolistId), [props.task.id, props.todolistId])
+    const onChangeCheckboxHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
          const newIsDoneValue = e.currentTarget.checked
-        props.changeStatus(props.task.id, props.task.status, props.todolistId)
-    }
-    const onChangeTitleHandler = (newValue: string) => {
+        props.changeStatus(props.task.id, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New, props.todolistId)
+    }, [props.task.id, props.todolistId])
+    const onChangeTitleHandler = useCallback((newValue: string) => {
         props.changeTitle(props.task.id, newValue, props.todolistId)
-    }
+    }, [props.task.id, props.todolistId])
 
-    const removeTask = () => {}
-
-    return <li key={props.task.id} className={props.task.completed ? 'is-done' : ''}>
+    return <div key={props.task.id} className={props.task.status === TaskStatuses.Completed ? 'is-done' : ''}>
 
         <Checkbox color={"primary"}
-                  checked={props.task.completed}
-                  onChange={onChangeCheckboxHandler}/>
+                  checked={props.task.status === TaskStatuses.Completed}
+                  onChange={onChangeCheckboxHandler}
+        />
+
         <EditableSpan title={props.task.title} onChange={onChangeTitleHandler}/>
         <IconButton onClick={onClickHandler}>
             <Delete/>
         </IconButton>
-    </li>
+    </div>
 })

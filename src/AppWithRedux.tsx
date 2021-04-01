@@ -15,9 +15,9 @@ import {useDispatch, useSelector} from 'react-redux'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import {AppRootStateType} from "./state/store";
 import {initializeAppTC, RequestStatusType} from "./state/app-reducer";
-import {TodolistsList} from "./Todolist/TodolistList";
+import {TodolistsList} from "./Todolist/TodolistsList";
 import {Login} from "./login/Login";
-import {logoutTC, setIsLoggedInAC} from "./state/login-reducer";
+import {logoutTC} from "./state/login-reducer";
 import {ErrorSnackBar} from "./ErrorSnackBar/ErrorSnackBar";
 
 

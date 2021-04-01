@@ -5,7 +5,6 @@ import {AddItemForm} from "./addItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 import { changeTodolistFilterAC, ChangeTodolistTitleAC, removeTodolistAC, todolistsReducer } from "./state/todolists-reducer";
-import {addTaskAC, updateTaskStatusAndTitleAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./state/tasks-reducer";
 import {TaskType} from "./api/task-api";
 
 

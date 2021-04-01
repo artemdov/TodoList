@@ -1,6 +1,6 @@
 import {TaskType, UpdateTaskModelType} from "../api/task-api";
 import {AddTodolistActionType, RemoveTodolistActionType, setTodolistACType} from "./todolists-reducer";
-import {todolistAPI} from "../api/task-api";
+import {taskAPI} from "../api/task-api";
 import {Dispatch} from "redux";
 import {AppRootStateType} from "./store";
 import {setErrorAC, setErrorActionType, setStatusAC, setStatusActionType} from "./app-reducer";
@@ -21,7 +21,6 @@ export type ActionType =
     | ReturnType<typeof removeTaskAC>
     | ReturnType<typeof addTaskAC>
     | ReturnType<typeof updateTaskStatusAndTitleAC>
-    | ReturnType<typeof changeTaskTitleAC>
     | ReturnType<typeof setTasksAC>
     | AddTodolistActionType
     | RemoveTodolistActionType
@@ -31,7 +30,8 @@ export type TasksStateType = {
     [key: string]: Array<TaskType>
 }
 
-export const tasksReducer = (state = initialState, action: ActionType): TasksStateType => {
+export const tasksReducer = (state = initialState, action: ActionType): TasksStateType =>
+{
     switch (action.type) {
         case 'REMOVE-TASK':
             return {...state, [action.todolistId]: state[action.todolistId].filter(t => t.id != action.taskId)}
@@ -73,23 +73,17 @@ export const tasksReducer = (state = initialState, action: ActionType): TasksSta
 
 export const removeTaskAC = (taskId: string, todolistId: string) => ({
     type: 'REMOVE-TASK',
-    taskId: taskId,
-    todolistId: todolistId
+    taskId,
+    todolistId
 } as const)
-
 export const addTaskAC = (task: TaskType) => ({type: 'ADD-TASK', task} as const)
 export const updateTaskStatusAndTitleAC = (taskId: string, model: UpdateDomainTaskModelType, todolistId: string) => ({
     type: 'UPDATE-TASK-STATUS-TITLE',
-    taskId,
     model,
-    todolistId
+    todolistId,
+    taskId
 } as const)
-export const changeTaskTitleAC = (taskId: string, title: string, todolistId: string) => ({
-    type: 'CHANGE-TASK-TITLE',
-    taskId: taskId,
-    title: title,
-    todolistId: todolistId
-} as const)
+
 export const setTasksAC = (tasks: Array<TaskType>, todolistId: string) => ({
     type: 'SET-TASKS',
     tasks,
@@ -99,7 +93,7 @@ export const setTasksAC = (tasks: Array<TaskType>, todolistId: string) => ({
 //thunks
 export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch<ActionType | setStatusActionType>) => {
     dispatch(setStatusAC('loading'))
-    todolistAPI.getTasks(todolistId)
+    taskAPI.getTasks(todolistId)
         .then((res) => {
             const tasks = res.data.items
             dispatch(setTasksAC(tasks, todolistId))
@@ -109,7 +103,7 @@ export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch<ActionTy
 export const deleteTaskTC = (id: string, todolistId: string) => (dispatch: Dispatch<ActionType
     | setStatusActionType>) => {
     dispatch(setStatusAC('loading'))
-    todolistAPI.deleteTask(todolistId, id)
+    taskAPI.deleteTask(todolistId, id)
         .then((res) => {
             dispatch(removeTaskAC(id, todolistId))
             dispatch(setStatusAC('succeeded'))
@@ -118,7 +112,7 @@ export const deleteTaskTC = (id: string, todolistId: string) => (dispatch: Dispa
 export const addTaskTC = (title: string, todolistId: string) => (dispatch: Dispatch<ActionType | setErrorActionType
     | setStatusActionType>) => {
     dispatch(setStatusAC('loading'))
-    todolistAPI.createTask(todolistId, title)
+    taskAPI.createTask(todolistId, title)
         .then((res) => {
             if (res.data.resultCode === 0) {
                 const task = res.data.data.item
@@ -136,7 +130,7 @@ export const addTaskTC = (title: string, todolistId: string) => (dispatch: Dispa
 
         })
 }
-export const updateTaskTitleAndStatusTC = (taskId: string, domainModel: UpdateDomainTaskModelType, todolistId: string) =>
+export const updateTaskTitleAndStatusTC = (taskId: string,domainModel: UpdateDomainTaskModelType, todolistId: string) =>
     (dispatch: Dispatch<ActionType | setStatusActionType | setErrorActionType>, getState: () => AppRootStateType) => {
 
         const state = getState()
@@ -154,8 +148,8 @@ export const updateTaskTitleAndStatusTC = (taskId: string, domainModel: UpdateDo
             deadline: task.deadline,
             ...domainModel
         }
-        todolistAPI.updateTask(todolistId, taskId, apiModel)
-            .then((res) => {
+        taskAPI.updateTask(todolistId, taskId, apiModel)
+            .then(res => {
                 if (res.data.resultCode === 0) {
                     dispatch(updateTaskStatusAndTitleAC(taskId, domainModel, todolistId))
                 } else {

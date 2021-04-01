@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {PriorityStatuses, TaskStatuses} from "./todolist-api";
 
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
@@ -21,9 +22,8 @@ export type TaskType = {
     addedDate: string
     order: number
     description: string
-    completed: boolean
-    status: number
-    priority: number
+    status: TaskStatuses
+    priority: PriorityStatuses
     startDate: string
     deadline: string
     todoListId: string
@@ -36,19 +36,19 @@ export type GetTasksResponse = {
 export type UpdateTaskModelType = {
     title: string
     description: string
-    status: number
-    priority: number
+    status: TaskStatuses
+    priority: PriorityStatuses
     startDate: string
     deadline: string
 }
 
-export const todolistAPI = {
+export const taskAPI = {
     getTasks(todolistId: string) {
         return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`)
     },
-    updateTask(todolistId: string,  id: string, model: UpdateTaskModelType) {
+    updateTask(todolistId: string,  taskId: string, model: UpdateTaskModelType) {
         debugger
-       return instance.put<ResponseType>(`todo-lists/${todolistId}/tasks/${id}`, model)
+       return instance.put<ResponseType<TaskType>>(`todo-lists/${todolistId}/tasks/${taskId}`, model)
     },
     deleteTask(todolistId: string, id: string)  {
         return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${id}`)
