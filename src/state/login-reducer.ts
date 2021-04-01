@@ -1,5 +1,5 @@
 import {Dispatch} from "redux";
-import {setStatusAC} from "./app-reducer";
+import {setErrorAC, setStatusAC} from "./app-reducer";
 import {authAPI, LoginParamsType} from "../api/auth-api";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 
@@ -33,16 +33,34 @@ export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch) => {
             if (res.data.resultCode === 0) {
                 dispatch(setIsLoggedInAC(true))
                 dispatch(setStatusAC('succeeded'))
+            }  else if (res.data.messages.length > 0) {
+                dispatch(setErrorAC(res.data.messages[0]))
+            } else {
+                dispatch(setErrorAC('some error'))
+            }
+            dispatch(setStatusAC('failed'))
+        })
+        .catch((error) => {
+            handleServerNetworkError(error, dispatch)
+
+        })
+    dispatch(setStatusAC('succeeded'))
+}
+
+
+export const logoutTC = () => (dispatch: Dispatch) => {
+    dispatch(setStatusAC('loading'))
+    authAPI.logout()
+        .then(res => {
+            if (res.data.resultCode === 0) {
+                dispatch(setIsLoggedInAC(false))
+                dispatch(setStatusAC('succeeded'))
             } else {
                 handleServerAppError(res.data, dispatch)
             }
         })
         .catch((error) => {
             handleServerNetworkError(error, dispatch)
-
         })
-
     dispatch(setStatusAC('succeeded'))
-
-
 }

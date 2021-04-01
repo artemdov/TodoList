@@ -6,6 +6,12 @@ import {loginTC} from "../state/login-reducer";
 import {AppRootStateType} from "../state/store";
 import { Redirect } from 'react-router-dom';
 
+type FormikErrorType = {
+    email?: string
+    password?: string
+    rememberMe?: boolean
+}
+
 export const Login = () => {
 
     const dispatch = useDispatch()
@@ -13,16 +19,18 @@ export const Login = () => {
 
     const formik = useFormik({
         validate: (values) => {
-            if(!values.email){
-                return {
-                    email: 'Email is required'
-                }
+            const errors: FormikErrorType = {};
+            if (!values.email) {
+                errors.email = 'Required';
+            } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+                errors.email = 'Invalid email address';
             }
-            if(!values.password){
-                return {
-                    password: 'Error password'
-                }
+            if (!values.password) {
+                errors.password = 'Пароль обязательно';
+            } else if (values.password.length < 3) {
+                errors.password = 'Пароль должен быть больше 3 символов';
             }
+            return errors;
         },
         initialValues: {
             email: '',
@@ -31,7 +39,6 @@ export const Login = () => {
         },
         onSubmit: values => {
             dispatch(loginTC(values))
-            alert(JSON.stringify(values));
         },
     })
 
@@ -59,7 +66,9 @@ export const Login = () => {
                         margin="normal"
                         {...formik.getFieldProps('email')}
                     />
-                    {formik.errors.email ? <div>{formik.errors.email}</div> : null}
+                    {formik.touched.email && formik.errors.email
+                        ? <div style={{color: 'red'}}>{formik.errors.email}</div>
+                        : null}
 
                     <TextField
                         type="password"
@@ -67,7 +76,9 @@ export const Login = () => {
                         margin="normal"
                         {...formik.getFieldProps('password')}
                     />
-                    {formik.errors.password ? <div>{formik.errors.password}</div> : null}
+                    {formik.touched.password && formik.errors.password
+                        ? <div style={{color: 'red'}}>{formik.errors.password}</div>
+                        : null}
                     <FormControlLabel
                         label={'Remember me'}
                         control={<Checkbox

@@ -1,7 +1,4 @@
 import {Dispatch} from "redux";
-import {todolistAPI} from "../api/todolist-api";
-import {handleServerNetworkError} from "../utils/error-utils";
-import {ActionType, setTodolistsAC} from "./todolists-reducer";
 import {authAPI} from "../api/auth-api";
 import {setIsLoggedInAC} from "./login-reducer";
 
@@ -12,6 +9,11 @@ const initialState = {
     error: null,
     isInitialized: false
 }
+
+export type setErrorActionType = ReturnType<typeof setErrorAC>;
+export  type setInitializedActionType = ReturnType<typeof setInitializedAC>;
+export  type setStatusActionType = ReturnType<typeof setStatusAC>;
+type ActionsType = setErrorActionType | setStatusActionType | setInitializedActionType
 
 export type InitialStateType = {
     //происходит ли сейчас взаимодействие с сервером
@@ -51,8 +53,3 @@ export const initializeAppTC = () => (dispatch: Dispatch) => {
 
             })
 }
-
-export type setErrorActionType = ReturnType<typeof setErrorAC>;
-export  type setInitializedActionType = ReturnType<typeof setInitializedAC>;
-export  type setStatusActionType = ReturnType<typeof setStatusAC>;
-type ActionsType = setErrorActionType | setStatusActionType | setInitializedActionType
