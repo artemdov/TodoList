@@ -47,7 +47,6 @@ export const taskAPI = {
         return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`)
     },
     updateTask(todolistId: string,  taskId: string, model: UpdateTaskModelType) {
-        debugger
        return instance.put<ResponseType<TaskType>>(`todo-lists/${todolistId}/tasks/${taskId}`, model)
     },
     deleteTask(todolistId: string, id: string)  {

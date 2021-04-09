@@ -13,14 +13,13 @@ import {
     addTaskTC,
     deleteTaskTC,
     TasksStateType,
-    updateTaskStatusAndTitleAC,
     updateTaskTitleAndStatusTC
 } from "../state/tasks-reducer";
 import {FilterValuesType} from "../App";
 import {AddItemForm} from "../addItemForm";
 import {Todolist} from "./TODOLIST";
 import {AppRootStateType} from "../state/store";
-import { Redirect } from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 
 
 type PropsType = {
